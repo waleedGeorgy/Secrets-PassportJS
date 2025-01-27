@@ -84,7 +84,7 @@ app.get("/submit", (req, res) => {
     }
 });
 ```
-9. (Optional) Using `.logout()` to end user sessions. The logout function takes the form of `.logout(callback(err))`. It is worth to note that it WILL NOT work with defining a callback.
+9. (Optional) Using `.logout()` to end user sessions. The logout function takes the form of `.logout(callback(err))`. It is worth to note that the function WILL NOT work without defining a callback.
 ```js
 app.get('/logout', (req, res, next) => {
     req.logout((err) => {
