@@ -12,7 +12,7 @@ The project uses:
 - <b>passport-local</b> & <b>passport-google-oauth20</b> for creating local and google OAuth2.0 authentication strategies respectively.
 - PostgreSQL's built-in <b>pgcrypto</b> for hashing and salting user passwords.
 - A database which includes two tables, the first one named "users", contains (id, email, password). The second one named "secrets", contains (id, secret, user_id).
-## The basic steps for creating a local authentication strategy
+## Basic steps for creating a local authentication strategy
 The process of creating a local authentication strategy can be broken down into 8 steps:
 1. Importing express-session, passport and passport-local modules.
 ```js
@@ -85,3 +85,6 @@ app.get("/submit", (req, res) => {
 });
 ```
 <i><b>NOTE:</b></i> this is not the only way of setting up passport authentication. Still, the core of the steps outlined above would not change that much from implementation to another, but rather the logic the defines them (depending on your use-case).
+
+## Basic steps for creating a Google OAuth2.0 authentication strategy
+
