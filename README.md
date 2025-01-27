@@ -11,7 +11,7 @@ The project uses:
 - <b>PassportJS</b> for managing user sessions and enabling the different authentication strategies.
 - <b>passport-local</b> & <b>passport-google-oauth20</b> for creating local and google OAuth2.0 authentication strategies respectively.
 - PostgreSQL's built-in <b>pgcrypto</b> for hashing and salting user passwords.
-- A database which includes two tables, the first one named "users" that contains each (id, email, password). The second one named "secrets" which contains (id, secret, user_id).
+- A database which includes two tables, the first one named "users", contains (id, email, password). The second one named "secrets", contains (id, secret, user_id).
 ## The basic steps for creating a local authentication strategy
 The process of creating a local authentication strategy can be broken down into 8 steps:
 1. Importing express-session, passport and passport-local modules.
@@ -23,6 +23,7 @@ import LocalStrategy from 'passport-local';
 2. Setting up the express-session and using it as middleware for your express application.
 ```js
 const app = express();
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -49,13 +50,13 @@ passport.use(new LocalStrategy (async(user, password, done) => {
     }
 }));
 ```
-5. Serializing the user.
+5. Serializing the user (i.e. attaching the authenticated user to a session).
 ```js
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 ```
-6. Deserializing the user.
+6. Deserializing the user (i.e. retrieving authenticated user information from the database in order to use in different parts of the code).
 ```js
 passport.deserializeUser(async(id, done) => {
     const result = await db.query("SELECT * FROM users WHERE id=$1", [id]);
@@ -73,7 +74,7 @@ app.post("/login", passport.authenticate('local', {
     failureRedirect: "/login",
 }));
 ```
-8. Protecting routes that should only be accessible by authenticated users using `isAuthenticated()`. For example, making sure only authenticated users are able to post secrets.
+8. Protecting routes that should only be accessible by authenticated users using `isAuthenticated()`. For example, making sure that only authenticated users are able to see the post secret page.
 ```js
 app.get("/submit", (req, res) => {
     if(req.isAuthenticated()){
@@ -83,4 +84,4 @@ app.get("/submit", (req, res) => {
     }
 });
 ```
-<i>NOTE:</i> this is not the one and only way of setting up passport authentication. But, the main steps would not change, only the logic the defines them (depending on your use-case).
+<i>NOTE:</i> this is not the only way of setting up passport authentication. Still, the core of the steps outlined above would not change that much from implementation to another, but rather the logic the defines them (depending on your use-case).
