@@ -176,7 +176,7 @@ app.get("/auth/google",
     passport.authenticate('google', { scope: ["profile"] })
 );
 ```
-8. Redirect users on successful authentication to the main page of the website that you set up while creating the client's ID.
+8. Redirect users on successful authentication to the main page of the website. This path is set up while creating the OAuth client's ID.
 ```js
 app.get("/auth/google/secrets",
     passport.authenticate('google', { successRedirect: "/secrets", failureRedirect: "/login" })
