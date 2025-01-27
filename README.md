@@ -74,7 +74,7 @@ app.post("/login", passport.authenticate('local', {
     failureRedirect: "/login",
 }));
 ```
-8. Protect routes that should only be accessible by authenticated users using `isAuthenticated()`. For example, making sure that only authenticated users are able to access the submit secret page.
+8. Protect routes that should be accessible only by authenticated users using the `.isAuthenticated()` function. For example, in the snippet below, I am making sure that only authenticated users are able to access the submit secret page.
 ```js
 app.get("/submit", (req, res) => {
     if(req.isAuthenticated()){
@@ -84,7 +84,7 @@ app.get("/submit", (req, res) => {
     }
 });
 ```
-9. (Optional) Use `.logout()` to end user sessions. The logout function takes the form of `.logout(callback(err))`. It is worth to note that the function WILL NOT work without defining a callback.
+9. (Optional) Use the `.logout()` function to end user sessions. The logout function takes the form of `.logout(callback(err))`. It is worth to note that this function WILL NOT work without defining a callback.
 ```js
 app.get('/logout', (req, res, next) => {
     req.logout((err) => {
