@@ -13,7 +13,7 @@ The project uses:
 - PostgreSQL's built-in <b>pgcrypto</b> for hashing and salting user passwords.
 - A database which includes two tables, the first one named "users", contains (id, email, password). The second one named "secrets", contains (id, secret, user_id).
 ## Basic steps for creating a local authentication strategy
-The process of creating a local authentication strategy can be broken down into 8 steps:
+The process of creating a local authentication strategy can be broken down into 8 main, and 1 optional steps:
 1. Importing express-session, passport and passport-local modules.
 ```js
 import session from 'express-session';
@@ -35,7 +35,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 ```
-4. Defining the local authentication strategy. The `LocalStrategy()` function takes a callback `(user, password, done) => {}` that will authenticate the user using their email and password (for example), that will return `done(null, false)` in case no user was found, `done(null, USER)` in case a user was found in the DB, or `done(error)` in case the there was en error in while quereing.
+4. Defining the local authentication strategy. The `LocalStrategy()` function takes in a callback `(user, password, done) => {}` that authenticates a user using their email and password (for example), and returns a "verify" function, that takes one of three forms: `done(null, false)` in case no user was found, `done(null, USER)` in case a user was found in the DB, or `done(error)` in case the there was en error in while querying. The `done()` callback is detailed <a href='https://www.passportjs.org/concepts/authentication/strategies/#verify-function'>here</a>.
 ```js
 passport.use(new LocalStrategy (async(user, password, done) => {
     try {
@@ -50,13 +50,13 @@ passport.use(new LocalStrategy (async(user, password, done) => {
     }
 }));
 ```
-5. Serializing the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object (in this example we're only attaching user's id to the session).
+5. Serializing the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object (in this example we're only attaching user's id to the session). `serializeUser(callback{userObject, done()})` take in 2 parameters, a user object that contains the user that was retrieved using the strategy from step 4, and the verify function that attaches the user in case of success (i.e. strategy executing correctly). 
 ```js
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 ```
-6. Deserializing the user, i.e. retrieving authenticated user's information from the database in order to use in different parts of the code, creating the `req.user` object.
+6. Deserializing the user, i.e. retrieving authenticated user's information from the database to use it in different parts of code, creating the `req.user` object. The `deserializeUser(callback{userObject, done()})` is the same as above, except for the verify function which adds the user to "req".
 ```js
 passport.deserializeUser(async(id, done) => {
     const result = await db.query("SELECT * FROM users WHERE id=$1", [id]);
@@ -67,14 +67,14 @@ passport.deserializeUser(async(id, done) => {
     }
 });
 ```
-7. Using the defined strategy from step 4 to authenticate users with `passport.authenticate(strategyName, {options}, callback())`. For example redirecting logged in (authenticated) users to the main page of the website.
+7. Using the defined strategy from step 4 to authenticate users with `passport.authenticate(strategyName, {options}, callback())`. For example redirecting logged in (authenticated) users to the main page of the website. For local authentication `strategyName = 'local'`. In `{ options }` you can specify redirection and logging, and the two main options are `successRedirect` and `failureRedirect` which are self-explanatory.
 ```js
 app.post("/login", passport.authenticate('local', {
     successRedirect: "/secrets",
     failureRedirect: "/login",
 }));
 ```
-8. Protecting routes that should only be accessible by authenticated users using `isAuthenticated()`. For example, making sure that only authenticated users are able to access the post secret page.
+8. Protecting routes that should only be accessible by authenticated users using `isAuthenticated()`. For example, making sure that only authenticated users are able to access the submit secret page.
 ```js
 app.get("/submit", (req, res) => {
     if(req.isAuthenticated()){
@@ -82,6 +82,15 @@ app.get("/submit", (req, res) => {
     } else {
         res.redirect("/login");
     }
+});
+```
+9. (Optional) Using `.logout()` to end user sessions. The logout function takes the form of `.logout(callback(err))`. It is worth to note that it WILL NOT work with defining a callback.
+```js
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
 });
 ```
 <i><b>NOTE:</b></i> this is not the only way of setting up passport authentication. Still, the core of the steps outlined above would not change that much from implementation to another, but rather the logic the defines them (depending on your use-case).
