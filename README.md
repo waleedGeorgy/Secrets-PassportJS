@@ -7,7 +7,7 @@ The project uses:
 - <b>async/await</b> for the promise-based parts of code.
 - <b>NodeJS</b> and <b>ExpressJS</b> for setting up the server and route handling.
 - <b>PostgreSQL</b> as the DBMS.
-- <b>express-session</b> for setting up express sessions.
+- <b>express-session</b> for setting up ExpressJS sessions.
 - <b>PassportJS</b> for managing user sessions and enabling the different authentication strategies.
 - <b>passport-local</b> & <b>passport-google-oauth20</b> for creating local and google OAuth2.0 authentication strategies respectively.
 - PostgreSQL's built-in <b>pgcrypto</b> module for hashing and salting user passwords.
