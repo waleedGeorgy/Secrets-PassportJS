@@ -50,13 +50,13 @@ passport.use(new LocalStrategy(async(user, password, done) => {
     }
 }));
 ```
-5. Serialize the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object (in this example we're only attaching user's id to the session). `serializeUser(callback{userObject, done()})` take in 2 parameters, a user object that contains the user that was retrieved using the strategy from step 4, and the verify function that attaches the user to the session when the strategy executes correctly. 
+5. Serialize the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object (in this example we're only attaching user's id to the session). The `serializeUser(callback{userObject, done()})` function accepts 2 parameters, a user object that contains the user retrieved using the strategy from step 4, and a verify function that attaches the user to the session when the strategy executes correctly. 
 ```js
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 ```
-6. Deserialize the user, i.e. retrieving authenticated user's information from the database to use it in different parts of code, creating the `req.user` object. The `deserializeUser(callback{userObject, done()})` is the same as above, except for the verify function which adds the user to "req".
+6. Deserialize the user, i.e. retrieving the authenticated user's information from the database to use it in different parts of code, creating the `req.user` object. The `deserializeUser(callback{userObject, done()})` is the same as above, except for the verify function which adds the user to "req".
 ```js
 passport.deserializeUser(async(id, done) => {
     const result = await db.query("SELECT * FROM users WHERE id=$1", [id]);
