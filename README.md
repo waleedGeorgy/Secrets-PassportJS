@@ -93,7 +93,7 @@ app.get('/logout', (req, res, next) => {
     });
 });
 ```
-<i><b>NOTE:</b></i> this is not the only way of setting up passport authentication. Still, the core of the steps outlined above would not change that much from implementation to another, but rather the logic the defines them (depending on your use-case).
+<i><b>NOTE:</b></i> this is not the only way of setting up passport authentication. Still, the core ideas outlined in the steps above would not change that much from one implementation to another, even the logic the defines said steps would most likely stay the same (depending on your use-case).
 
 ## Basic steps for creating a Google OAuth2.0 authentication strategy
 
