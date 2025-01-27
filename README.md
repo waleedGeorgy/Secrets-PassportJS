@@ -121,7 +121,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 ```
-4. Define the google authentication strategy. The `GoogleStrategy()` function (middleware) accepts a callback `({ options }, callback(accessToken, refreshToken, profile, done))`, `{ options }` is where you set up your client ID credentials, `clientID` and `cliendSecret` are provided by Google, while `callbackURL` is defined by the user when creating the client ID. In the callback you define the "find or create user" logic. Just like with the local strategy we use the `done()` "verify" function to either return the found or created user and ready it for serialization or output and error otherwise.
+4. Define the Google authentication strategy. The `GoogleStrategy()` function (middleware) accepts a callback `({ options }, callback(accessToken, refreshToken, profile, done))`. `{ options }` is where you set up your client ID credentials, `clientID` and `cliendSecret` are provided by Google, while `callbackURL` is defined by you when creating the client ID. In the callback you define the "find or create user" logic. Just like with the local strategy we use the `done()` "verify" function to either return the found or created user, and ready it for serialization, or output an error otherwise.
 ```js
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -169,7 +169,7 @@ passport.deserializeUser(async(id, done) => {
     }
 });
 ```
-7. Set-up the Google authentication route with `passport.authenticate('google', { scopes })`, which will take the user to the "Sign up with Google" form. In case of successful authentication, Google returns whatever is defined in `{ scopes }`. For example. in the code below we declaring that we want user's profile which contains info such as user's name, google id, profile picture, etc.
+7. Set-up the Google authentication route with `passport.authenticate('google', { scopes })`, which will take the user to the "Sign up with Google" form. In case of successful authentication, Google returns whatever is defined in `{ scopes }`. For example. in the code below I am declaring that I want user's profile which contains info such as user's name, google id, profile picture, etc. which will be used to either find or create a new user, as was defined in the strategy above.
 ```js
 /* GETting the google authentication route, authenticating the user using their google credentials 
    and retrieving the user's profile (Set up in ClientID) on successful authentiucation */
