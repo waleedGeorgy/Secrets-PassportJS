@@ -131,7 +131,6 @@ passport.use(new GoogleStrategy({
   async (accessToken, refreshToken, profile, done) => {
     const userData = profile._json;
     let user = {};
-    // Applying the findOrCreate logic by creating a user if it does not exist
     try {
         const currentUserQuery = await db.query("SELECT * FROM users WHERE google_id = $1", [userData.sub]);
         if (currentUserQuery.rowCount > 0){
