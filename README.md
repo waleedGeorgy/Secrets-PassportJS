@@ -50,7 +50,7 @@ passport.use(new LocalStrategy (async(user, password, done) => {
     }
 }));
 ```
-5. Serializing the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object.
+5. Serializing the user, i.e. attaching the authenticated user to a session, which will create the `req.session.passport.USER` object (in this example we're only attaching user's id to the session).
 ```js
 passport.serializeUser((user, done) => {
     done(null, user.id);
