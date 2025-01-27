@@ -170,8 +170,6 @@ passport.deserializeUser(async(id, done) => {
 ```
 7. Set-up the Google authentication route with `passport.authenticate('google', { scopes })`, which will take the user to the "Sign up with Google" form. In case of successful authentication, Google returns whatever is defined in `{ scopes }`. For example. in the code below I am declaring that I want user's profile which contains info such as user's name, google id, profile picture, etc. which will be used to either find or create a new user, as was defined in the strategy above.
 ```js
-/* GETting the google authentication route, authenticating the user using their google credentials 
-   and retrieving the user's profile (Set up in ClientID) on successful authentiucation */
 app.get("/auth/google",
     passport.authenticate('google', { scope: ["profile"] })
 );
