@@ -3,7 +3,7 @@ A basic website that is loosely based on the Whisper app, where users can anonym
 The main point of this project is to test out, experiment with and document the <b>PassportJS</b> package, that is not very well documented, and does not have much resources or tutorials online, especially when used with PostgreSQL.<br />
 ## Project Structure
 The project uses:
-- the <b>ECMAScript (ES6) Module System</b>.
+- the <b>ECMAScript (ES6) module system</b>.
 - <b>async/await</b> for the promise-based parts of code.
 - <b>NodeJS</b> and <b>ExpressJS</b> for setting up the server and route handling.
 - <b>PostgreSQL</b> as the DBMS.
