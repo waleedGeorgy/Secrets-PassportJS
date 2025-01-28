@@ -35,7 +35,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 ```
-4. Define the local authentication strategy. The `LocalStrategy()` function (middleware) takes in a callback `(user, password, done) => {}` that authenticates users using their email and password (for example), and returns a "verify" function, that takes one of three forms: `done(null, false)` in case no user was found, `done(null, USER)` in case a user was found in the DB, or `done(error)` in case an error occured while querying. The `done()` callback is detailed <a href='https://www.passportjs.org/concepts/authentication/strategies/#verify-function'>here</a>.
+4. Define the local authentication strategy. The `LocalStrategy()` function (middleware) takes in a callback `callback(user, password, done)` that authenticates users using their email and password (for example), and returns a "verify" function, that takes one of three forms: `done(null, false)` in case no user was found, `done(null, USER)` in case a user was found in the DB, or `done(error)` in case an error occured while querying. The `done()` callback is detailed <a href='https://www.passportjs.org/concepts/authentication/strategies/#verify-function'>here</a>.
 ```js
 passport.use(new LocalStrategy(async(user, password, done) => {
     try {
